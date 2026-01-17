@@ -36,12 +36,12 @@ export function Destinations() {
   }
 
   return (
-    <section className="py-16 bg-muted">
+    <section className="py-16  ">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-foreground mb-2">
+        <h2 className="text-2xl text-white md:text-3xl font-bold text-center text-foreground mb-2">
           TE LLEVAMOS A CUALQUIER LUGAR
         </h2>
-        <p className="text-center text-muted-foreground mb-10">Destinos populares y aeropuertos</p>
+        <p className="text-center text-white mb-10">Destinos populares y aeropuertos</p>
 
         <div className="relative">
           <Button
@@ -58,29 +58,37 @@ export function Destinations() {
               className="flex gap-4 transition-transform duration-500"
               style={{ transform: `translateX(-${currentIndex * (100 / visibleCards)}%)` }}
             >
-              {popularDestinations.map((dest, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-1/2 md:w-1/4 relative rounded-xl overflow-hidden cursor-pointer group"
-                >
-                  <div className="absolute top-3 right-3 z-10 bg-taxi-yellow/90 rounded-full p-2">
-                    {dest.type === "airport" ? (
-                      <Plane className="w-4 h-4 text-background" />
-                    ) : (
-                      <MapPin className="w-4 h-4 text-background" />
-                    )}
-                  </div>
-                  <img
-                    src={dest.image || "/placeholder.svg"}
-                    alt={dest.name}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <h3 className="text-white font-bold text-lg">{dest.name}</h3>
-                  </div>
-                </div>
-              ))}
+             {popularDestinations.map((dest, index) => (
+  <div
+    key={index}
+    className="flex-shrink-0 w-1/2 md:w-1/4 h-80 relative rounded-xl overflow-hidden cursor-pointer group"
+  >
+    {/* Tipo de destino */}
+    <div className="absolute top-3 right-3 z-10 bg-taxi-yellow/90 rounded-full p-2">
+      {dest.type === "airport" ? (
+        <Plane className="w-5 h-5 text-background" />
+      ) : (
+        <MapPin className="w-5 h-5 text-background" />
+      )}
+    </div>
+
+    {/* Imagen */}
+    <img
+      src={dest.image || "/placeholder.svg"}
+      alt={dest.name}
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+
+    {/* Gradiente */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
+    {/* Nombre del destino */}
+    <div className="absolute bottom-4 left-4">
+      <h3 className="text-white font-bold text-lg">{dest.name}</h3>
+    </div>
+  </div>
+))}
+
             </div>
           </div>
 

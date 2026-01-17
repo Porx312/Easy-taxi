@@ -7,7 +7,21 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { Calendar, Users, MapPin, Phone, Mail, User, Clock, Loader2, CheckCircle, Map, X } from "lucide-react"
+import {
+  Calendar,
+  Users,
+  MapPin,
+  Phone,
+  Mail,
+  User,
+  Clock,
+  Loader2,
+  CheckCircle,
+  Map,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react"
 import dynamic from "next/dynamic"
 
 const taxiTypes = [
@@ -23,21 +37,26 @@ const popularDestinations = [
   { value: "lloret", label: "Lloret del Mar", coords: { lat: 41.7, lng: 2.8453 } },
   { value: "port-aventura", label: "Port Aventura", coords: { lat: 41.0869, lng: 1.1556 } },
   { value: "andorra", label: "Andorra", coords: { lat: 42.5063, lng: 1.5218 } },
-  { value: "sitges", label: "Sitges", coords: { lat: 41.2371, lng: 1.8058 } },
   { value: "tarragona", label: "Tarragona", coords: { lat: 41.1189, lng: 1.2445 } },
 ]
 
-// Dynamic import for map component to avoid SSR issues
 const MapPicker = dynamic(() => import("./MapPicker"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[400px] bg-neutral-100 rounded-lg flex items-center justify-center">
+    <div className="w-full h-[300px] bg-neutral-100 rounded-lg flex items-center justify-center">
       <Loader2 className="w-8 h-8 animate-spin text-taxi-yellow" />
     </div>
   ),
 })
 
+const STEPS = [
+  { id: 1, title: "Datos personales", description: "Tu información de contacto" },
+  { id: 2, title: "Detalles del viaje", description: "Origen, destino y tipo de taxi" },
+  { id: 3, title: "Fecha y hora", description: "Cuándo te recogemos" },
+]
+
 export function ContactForm() {
+  const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -65,9 +84,7 @@ export function ContactForm() {
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
 
@@ -106,26 +123,40 @@ export function ContactForm() {
   const handlePopularDestinationSelect = (value: string) => {
     const destination = popularDestinations.find((d) => d.value === value)
     if (destination) {
-      setFormData({
-        ...formData,
-        destino: destination.label,
-        destinoCoords: destination.coords,
-      })
+      setFormData({ ...formData, destino: destination.label, destinoCoords: destination.coords })
     }
+  }
+
+  const canProceedStep1 = formData.nombre && formData.email && formData.telefono
+  const canProceedStep2 = formData.tipoTaxi && formData.origen && formData.destino && formData.pasajeros
+  const canProceedStep3 = formData.fecha && formData.hora
+
+  const nextStep = () => {
+    if (currentStep < 3) setCurrentStep(currentStep + 1)
+  }
+
+  const prevStep = () => {
+    if (currentStep > 1) setCurrentStep(currentStep - 1)
   }
 
   if (isSuccess) {
     return (
       <section id="contacto" className="py-16 bg-gradient-to-b from-neutral-50 to-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-10 text-center">
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-foreground mb-2">Reserva Enviada!</h2>
               <p className="text-muted-foreground mb-6">
                 Hemos recibido tu solicitud. Te contactaremos en menos de 10 minutos para confirmar tu reserva.
               </p>
-              <Button onClick={() => setIsSuccess(false)} className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90">
+              <Button
+                onClick={() => {
+                  setIsSuccess(false)
+                  setCurrentStep(1)
+                }}
+                className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90"
+              >
                 Hacer otra reserva
               </Button>
             </div>
@@ -138,288 +169,369 @@ export function ContactForm() {
   return (
     <section id="contacto" className="py-16 bg-gradient-to-b from-neutral-50 to-white">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Reserva tu Taxi</h2>
-            <p className="text-muted-foreground">Completa el formulario y te contactaremos de inmediato</p>
+            <p className="text-muted-foreground">Completa el formulario en 3 sencillos pasos</p>
           </div>
 
-          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-10">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Step Indicator */}
+          <div className="flex items-center justify-center mb-8">
+            {STEPS.map((step, index) => (
+              <div key={step.id} className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors ${
+                      currentStep >= step.id ? "bg-taxi-yellow text-black" : "bg-neutral-200 text-neutral-500"
+                    }`}
+                  >
+                    {currentStep > step.id ? <CheckCircle className="w-5 h-5" /> : step.id}
+                  </div>
+                  <span
+                    className={`text-xs mt-1 hidden sm:block ${currentStep >= step.id ? "text-foreground font-medium" : "text-muted-foreground"}`}
+                  >
+                    {step.title}
+                  </span>
+                </div>
+                {index < STEPS.length - 1 && (
+                  <div
+                    className={`w-12 sm:w-20 h-1 mx-2 ${currentStep > step.id ? "bg-taxi-yellow" : "bg-neutral-200"}`}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-8">
+            <form onSubmit={handleSubmit}>
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">{error}</div>
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">{error}</div>
               )}
 
-              {/* Personal Info */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="nombre" className="flex items-center gap-2">
-                    <User className="w-4 h-4 text-taxi-yellow" />
-                    Nombre completo *
-                  </Label>
-                  <Input
-                    id="nombre"
-                    required
-                    placeholder="Juan Pérez"
-                    value={formData.nombre}
-                    onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                    disabled={isLoading}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="telefono" className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-taxi-yellow" />
-                    Teléfono *
-                  </Label>
-                  <Input
-                    id="telefono"
-                    type="tel"
-                    required
-                    placeholder="+34 600 000 000"
-                    value={formData.telefono}
-                    onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                    disabled={isLoading}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email" className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-taxi-yellow" />
-                  Email *
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="correo@ejemplo.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  disabled={isLoading}
-                />
-              </div>
-
-              {/* Service Details */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="tipoTaxi">Tipo de taxi *</Label>
-                  <Select
-                    value={formData.tipoTaxi}
-                    onValueChange={(value) => setFormData({ ...formData, tipoTaxi: value })}
-                    disabled={isLoading}
-                    required
-                  >
-                    <SelectTrigger id="tipoTaxi">
-                      <SelectValue placeholder="Selecciona un tipo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {taxiTypes.map((tipo) => (
-                        <SelectItem key={tipo.value} value={tipo.value}>
-                          {tipo.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="pasajeros" className="flex items-center gap-2">
-                    <Users className="w-4 h-4 text-taxi-yellow" />
-                    Número de pasajeros *
-                  </Label>
-                  <Input
-                    id="pasajeros"
-                    type="number"
-                    min="1"
-                    max="8"
-                    required
-                    placeholder="1"
-                    value={formData.pasajeros}
-                    onChange={(e) => setFormData({ ...formData, pasajeros: e.target.value })}
-                    disabled={isLoading}
-                  />
-                </div>
-              </div>
-
-              {/* Location Details */}
-              <div className="space-y-2">
-                <Label htmlFor="origen" className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-taxi-yellow" />
-                  Dirección de recogida *
-                </Label>
-                <Input
-                  id="origen"
-                  required
-                  placeholder="Calle, número, ciudad"
-                  value={formData.origen}
-                  onChange={(e) => setFormData({ ...formData, origen: e.target.value })}
-                  disabled={isLoading}
-                />
-              </div>
-
-              <div className="space-y-3">
-                <Label className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-red-500" />
-                  Destino *
-                </Label>
-
-                {/* Tabs para cambiar modo */}
-                <div className="flex gap-2 flex-wrap">
-                  <Button
-                    type="button"
-                    variant={destinoInputMode === "text" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setDestinoInputMode("text")}
-                    className={destinoInputMode === "text" ? "bg-taxi-yellow text-black hover:bg-taxi-yellow/90" : ""}
-                  >
-                    Escribir dirección
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={destinoInputMode === "select" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setDestinoInputMode("select")}
-                    className={destinoInputMode === "select" ? "bg-taxi-yellow text-black hover:bg-taxi-yellow/90" : ""}
-                  >
-                    Destinos populares
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowMap(true)}
-                    className="border-taxi-yellow text-taxi-yellow hover:bg-taxi-yellow hover:text-black"
-                  >
-                    <Map className="w-4 h-4 mr-2" />
-                    Seleccionar en mapa
-                  </Button>
-                </div>
-
-                {/* Input de texto */}
-                {destinoInputMode === "text" && (
-                  <Input
-                    id="destino"
-                    required
-                    placeholder="Escribe la dirección de destino"
-                    value={formData.destino}
-                    onChange={(e) => setFormData({ ...formData, destino: e.target.value, destinoCoords: null })}
-                    disabled={isLoading}
-                  />
-                )}
-
-                {/* Select de destinos populares */}
-                {destinoInputMode === "select" && (
-                  <Select
-                    value={popularDestinations.find((d) => d.label === formData.destino)?.value || ""}
-                    onValueChange={handlePopularDestinationSelect}
-                    disabled={isLoading}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona un destino popular" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {popularDestinations.map((dest) => (
-                        <SelectItem key={dest.value} value={dest.value}>
-                          {dest.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-
-                {/* Mostrar destino seleccionado si viene del mapa */}
-                {formData.destino && formData.destinoCoords && (
-                  <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <MapPin className="w-4 h-4 text-green-600 shrink-0" />
-                    <span className="text-sm text-green-800 flex-1">{formData.destino}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setFormData({ ...formData, destino: "", destinoCoords: null })}
-                      className="h-6 w-6 p-0"
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
+              {/* Step 1: Personal Info */}
+              {currentStep === 1 && (
+                <div className="space-y-5">
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-foreground">{STEPS[0].title}</h3>
+                    <p className="text-sm text-muted-foreground">{STEPS[0].description}</p>
                   </div>
-                )}
-              </div>
 
-              {/* Date and Time */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="fecha" className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-taxi-yellow" />
-                    Fecha *
-                  </Label>
-                  <Input
-                    id="fecha"
-                    type="date"
-                    required
-                    value={formData.fecha}
-                    onChange={(e) => setFormData({ ...formData, fecha: e.target.value })}
-                    disabled={isLoading}
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="nombre" className="flex items-center gap-2">
+                      <User className="w-4 h-4 text-taxi-yellow" />
+                      Nombre completo *
+                    </Label>
+                    <Input
+                      id="nombre"
+                      required
+                      placeholder="Juan Pérez"
+                      value={formData.nombre}
+                      onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-taxi-yellow" />
+                      Email *
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      required
+                      placeholder="correo@ejemplo.com"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="telefono" className="flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-taxi-yellow" />
+                      Teléfono *
+                    </Label>
+                    <Input
+                      id="telefono"
+                      type="tel"
+                      required
+                      placeholder="+34 600 000 000"
+                      value={formData.telefono}
+                      onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
+                    />
+                  </div>
                 </div>
+              )}
 
-                <div className="space-y-2">
-                  <Label htmlFor="hora" className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-taxi-yellow" />
-                    Hora *
-                  </Label>
-                  <Input
-                    id="hora"
-                    type="time"
-                    required
-                    value={formData.hora}
-                    onChange={(e) => setFormData({ ...formData, hora: e.target.value })}
-                    disabled={isLoading}
-                  />
+              {/* Step 2: Trip Details */}
+              {currentStep === 2 && (
+                <div className="space-y-5">
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-foreground">{STEPS[1].title}</h3>
+                    <p className="text-sm text-muted-foreground">{STEPS[1].description}</p>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="tipoTaxi">Tipo de taxi *</Label>
+                      <Select
+                        value={formData.tipoTaxi}
+                        onValueChange={(value) => setFormData({ ...formData, tipoTaxi: value })}
+                      >
+                        <SelectTrigger id="tipoTaxi">
+                          <SelectValue placeholder="Selecciona un tipo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {taxiTypes.map((tipo) => (
+                            <SelectItem key={tipo.value} value={tipo.value}>
+                              {tipo.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="pasajeros" className="flex items-center gap-2">
+                        <Users className="w-4 h-4 text-taxi-yellow" />
+                        Pasajeros *
+                      </Label>
+                      <Input
+                        id="pasajeros"
+                        type="number"
+                        min="1"
+                        max="8"
+                        required
+                        placeholder="1"
+                        value={formData.pasajeros}
+                        onChange={(e) => setFormData({ ...formData, pasajeros: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="origen" className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-taxi-yellow" />
+                      Dirección de recogida *
+                    </Label>
+                    <Input
+                      id="origen"
+                      required
+                      placeholder="Calle, número, ciudad"
+                      value={formData.origen}
+                      onChange={(e) => setFormData({ ...formData, origen: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-red-500" />
+                      Destino *
+                    </Label>
+
+                    <div className="flex gap-2 flex-wrap">
+                      <Button
+                        type="button"
+                        variant={destinoInputMode === "text" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setDestinoInputMode("text")}
+                        className={
+                          destinoInputMode === "text" ? "bg-taxi-yellow text-black hover:bg-taxi-yellow/90" : ""
+                        }
+                      >
+                        Escribir
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={destinoInputMode === "select" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setDestinoInputMode("select")}
+                        className={
+                          destinoInputMode === "select" ? "bg-taxi-yellow text-black hover:bg-taxi-yellow/90" : ""
+                        }
+                      >
+                        Populares
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowMap(true)}
+                        className="border-taxi-yellow text-taxi-yellow hover:bg-taxi-yellow hover:text-black"
+                      >
+                        <Map className="w-4 h-4 mr-1" />
+                        Mapa
+                      </Button>
+                    </div>
+
+                    {destinoInputMode === "text" && (
+                      <Input
+                        id="destino"
+                        required
+                        placeholder="Escribe la dirección de destino"
+                        value={formData.destino}
+                        onChange={(e) => setFormData({ ...formData, destino: e.target.value, destinoCoords: null })}
+                      />
+                    )}
+
+                    {destinoInputMode === "select" && (
+                      <Select
+                        value={popularDestinations.find((d) => d.label === formData.destino)?.value || ""}
+                        onValueChange={handlePopularDestinationSelect}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona un destino" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {popularDestinations.map((dest) => (
+                            <SelectItem key={dest.value} value={dest.value}>
+                              {dest.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+
+                    {formData.destino && formData.destinoCoords && (
+                      <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <MapPin className="w-4 h-4 text-green-600 shrink-0" />
+                        <span className="text-sm text-green-800 flex-1">{formData.destino}</span>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setFormData({ ...formData, destino: "", destinoCoords: null })}
+                          className="h-6 w-6 p-0"
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Additional Info */}
-              <div className="space-y-2">
-                <Label htmlFor="mensaje">Información adicional</Label>
-                <Textarea
-                  id="mensaje"
-                  placeholder="Equipaje especial, silla de bebé, etc."
-                  rows={4}
-                  value={formData.mensaje}
-                  onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
-                  disabled={isLoading}
-                />
-              </div>
+              {/* Step 3: Date, Time & Message */}
+              {currentStep === 3 && (
+                <div className="space-y-5">
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-foreground">{STEPS[2].title}</h3>
+                    <p className="text-sm text-muted-foreground">{STEPS[2].description}</p>
+                  </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-taxi-yellow text-black hover:bg-taxi-yellow/90 font-bold py-6 text-lg"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Enviando...
-                  </>
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="fecha" className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-taxi-yellow" />
+                        Fecha *
+                      </Label>
+                      <Input
+                        id="fecha"
+                        type="date"
+                        required
+                        value={formData.fecha}
+                        onChange={(e) => setFormData({ ...formData, fecha: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="hora" className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-taxi-yellow" />
+                        Hora *
+                      </Label>
+                      <Input
+                        id="hora"
+                        type="time"
+                        required
+                        value={formData.hora}
+                        onChange={(e) => setFormData({ ...formData, hora: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="mensaje">Información adicional</Label>
+                    <Textarea
+                      id="mensaje"
+                      placeholder="Equipaje especial, silla de bebé, etc."
+                      rows={4}
+                      value={formData.mensaje}
+                      onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
+                    />
+                  </div>
+
+                  {/* Summary */}
+                  <div className="bg-neutral-50 rounded-xl p-4 space-y-2">
+                    <h4 className="font-medium text-foreground text-sm">Resumen de tu reserva</h4>
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <p>
+                        <span className="font-medium text-foreground">Nombre:</span> {formData.nombre}
+                      </p>
+                      <p>
+                        <span className="font-medium text-foreground">Taxi:</span>{" "}
+                        {taxiTypes.find((t) => t.value === formData.tipoTaxi)?.label}
+                      </p>
+                      <p>
+                        <span className="font-medium text-foreground">De:</span> {formData.origen}
+                      </p>
+                      <p>
+                        <span className="font-medium text-foreground">A:</span> {formData.destino}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation Buttons */}
+              <div className="flex justify-between mt-8 pt-6 border-t">
+                {currentStep > 1 ? (
+                  <Button type="button" variant="outline" onClick={prevStep}>
+                    <ChevronLeft className="w-4 h-4 mr-1" />
+                    Anterior
+                  </Button>
                 ) : (
-                  "Solicitar Reserva"
+                  <div />
                 )}
-              </Button>
 
-              <p className="text-center text-sm text-muted-foreground">
-                Te contactaremos en menos de 10 minutos para confirmar tu reserva
-              </p>
+                {currentStep < 3 ? (
+                  <Button
+                    type="button"
+                    onClick={nextStep}
+                    disabled={currentStep === 1 ? !canProceedStep1 : !canProceedStep2}
+                    className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90"
+                  >
+                    Siguiente
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    disabled={!canProceedStep3 || isLoading}
+                    className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      "Confirmar Reserva"
+                    )}
+                  </Button>
+                )}
+              </div>
             </form>
           </div>
+
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            Te contactaremos en menos de 10 minutos para confirmar tu reserva
+          </p>
         </div>
       </div>
 
-      {/* Modal del mapa */}
+      {/* Map Modal */}
       {showMap && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl">
+          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl">
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="text-lg font-semibold">Selecciona el destino en el mapa</h3>
               <Button variant="ghost" size="sm" onClick={() => setShowMap(false)}>

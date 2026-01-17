@@ -13,12 +13,18 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
+      <div className=" bg-gradient-to-b bg-taxi-yellow">
       <HeroSection />
+
       <FeaturesBar />
       <HowItWorks />
+      </div>
+      <div className=" bg-gradient-to-b from-black to-gray-950">
+
       <TaxiTypes />
       <Destinations />
       <DriversSection />
+      </div>
         <ContactForm />
       <Footer />
             <CookieBanner />

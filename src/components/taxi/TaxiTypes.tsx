@@ -1,122 +1,98 @@
 "use client"
 
+import type React from "react"
+
 import { memo } from "react"
 import Image from "next/image"
-import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Plane, MapPin, Ship, Train, Navigation, ArrowRight } from "lucide-react"
+import { Plane, MapPin, Ship, Train, Route } from "lucide-react"
 
-// Tipos
-export type TaxiType = {
+type TaxiType = {
   id: string
   name: string
   image: string
-  tag?: string
 }
 
-export type Destination = {
+type Destination = {
   icon: React.ComponentType<{ className?: string }>
   label: string
 }
-
 const taxiTypes: TaxiType[] = [
-  { id: "van", name: "7/8 plazas", image: "/large-black-minivan-taxi-8-seats.jpg", tag: "Grupos" },
-  { id: "standard", name: "Estándar", image: "/standard-yellow-taxi-sedan-barcelona.jpg" },
-  { id: "premium", name: "Premium", image: "/premium-black-mercedes-taxi-luxury.jpg", tag: "Confort" },
-  { id: "pmr", name: "Adaptado PMR", image: "/wheelchair-accessible-taxi-van.jpg", tag: "Accesible" },
+  { id: "van", name: "7/8 plazas", image: "/taxi/types/7-8plazas.png" },
+  { id: "standard", name: "Estándar", image: "/taxi/types/estandar.png" },
+  { id: "premium", name: "Premium", image: "/taxi/types/premium.png" },
+  { id: "pmr", name: "Adaptado PMR", image: "/taxi/types/adaptado.png" },
 ]
 
 const destinations: Destination[] = [
-  { icon: Plane, label: "Aeropuertos" },
-  { icon: MapPin, label: "Recogidas" },
-  { icon: Ship, label: "Cruceros" },
+  { icon: Plane, label: "aeropuertos" },
+  { icon: MapPin, label: "recogidas" },
+  { icon: Ship, label: "cruceros" },
   { icon: Train, label: "Estaciones" },
-  { icon: Navigation, label: "Largas distancias" },
+  { icon: Route, label: "Largas Distancias" },
 ]
-
-const cardMotion = {
-  initial: { opacity: 0, y: 16 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.4, ease: "easeOut" },
-}
 
 function TaxiTypesComponent() {
   return (
-    <section id="tipos" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <header className="mb-12 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">Nuestros taxis</h2>
-          <p className="mt-2 text-taxi-yellow">Elige el vehículo que mejor se adapte a tu viaje</p>
-        </header>
+    <section className="w-full">
+      {/* Yellow Header Section */}
+      <div className="bg-taxi-yellow pt-12 pb-32 md:pb-40">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl md:text-5xl font-black text-taxi-dark italic">Nuestros Taxis</h2>
+          <p className="mt-3 text-lg md:text-xl text-taxi-dark italic font-medium">
+            Elige el vehículo que mejor se adapte a tu viaje
+          </p>
+        </div>
+      </div>
 
-        {/* Grid de taxis */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-          {taxiTypes.map((taxi) => (
-            <motion.div key={taxi.id} {...cardMotion}>
-              <Card className="group relative overflow-hidden border-0 shadow-lg rounded-2xl">
-                <CardContent className="p-0">
-                  <div className="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/40 transition-colors" />
+      {/* Cards Section - Overlapping yellow and black */}
+      <div className="bg-taxi-dark -mt-24 md:-mt-32 pt-0 pb-12">
+        <div className="container mx-auto px-4">
+          {/* Taxi Cards Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {taxiTypes.map((taxi) => (
+              <div key={taxi.id} className="relative flex flex-col items-center">
+                {/* Solicitar Button - Above card */}
+                
+                {/* White Card */}
+                <div className="bg-white rounded-3xl h-[250px] w-full pt-6 pb-24 md:pb-32 flex flex-col items-center relative overflow-visible">
+                  <h3 className="text-xl md:text-2xl font-black text-taxi-dark text-center">{taxi.name}</h3>
+                </div>
 
-                  <div className="absolute top-3 right-3 z-20 flex gap-2">
-                    {taxi.tag && <Badge className="bg-black/70 text-white">{taxi.tag}</Badge>}
-                    <Button
-                      size="sm"
-                      className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90 text-xs"
-                      aria-label={`Solicitar taxi ${taxi.name}`}
-                    >
-                      Solicitar
-                    </Button>
-                  </div>
-
+                {/* Car Image - Overlapping bottom of card */}
+                <div className="absolute -bottom-4 md:-bottom-6 left-1/2 -translate-x-1/2 w-[120%] max-w-[380px] h-[200px] md:h-[240px]">
                   <Image
-                    src={taxi.image}
+                    src={taxi.image || "/placeholder.svg"}
                     alt={`Taxi ${taxi.name}`}
-                    width={640}
-                    height={360}
-                    className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    fill
+                    className="object-contain"
                     loading="lazy"
                   />
-
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/80 to-transparent p-4">
-                    <h3 className="text-white font-semibold">{taxi.name}</h3>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Destinos */}
-        <motion.h3
-          className="text-xl md:text-2xl font-bold text-center text-foreground mb-10"
-          {...cardMotion}
-        >
-          Te llevamos a cualquier lugar
-        </motion.h3>
-
-        <div className="flex flex-wrap justify-center gap-10 mb-12">
-          {destinations.map((dest, index) => (
-            <motion.div key={index} className="flex flex-col items-center gap-3" {...cardMotion}>
-              <div className="w-12 h-12 bg-foreground rounded-full flex items-center justify-center shadow">
-                <dest.icon className="w-6 h-6 text-background" aria-hidden />
+                </div>
               </div>
-              <span className="text-sm font-medium text-foreground">{dest.label}</span>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* CTA */}
-        <div className="flex justify-center">
-          <Button
-            size="lg"
-            className="rounded-2xl bg-foreground text-background hover:opacity-90"
-          >
-            Consigue tu taxi ahora
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+        {/* Destinations Section */}
+        <div className="container mx-auto px-4 mt-20 md:mt-24">
+         
+
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16 mb-12">
+            {destinations.map((dest, index) => (
+              <div key={index} className="flex flex-col items-center gap-3">
+                <dest.icon className="w-10 h-10 md:w-12 md:h-12 text-white" strokeWidth={1.5} aria-hidden />
+                <span className="text-sm md:text-base font-bold text-white">{dest.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Button */}
+          <div className="flex justify-center">
+            <Button className="bg-taxi-yellow text-taxi-dark hover:bg-taxi-yellow/90 rounded-lg px-8 py-3 text-base font-semibold">
+              Consigue tu Taxi Ahora
+            </Button>
+          </div>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { ReserveButton } from "./Buttons/ReserveButton"
 
 export function HeroSection() {
     return (
@@ -21,9 +22,7 @@ export function HeroSection() {
                             Taxis hasta 8 plazas, taxis premium y adaptados PMR. Reserva ahora y paga al finalizar el servicio
                         </p>
 
-                        <Button className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90 font-bold text-lg px-8 py-6 shadow-[0_0_30px_rgba(251,191,36,0.4)]">
-                            Reservar Ahora
-                        </Button>
+                        <ReserveButton text="Reservar Ahora" className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90 font-bold text-lg px-8 py-6 shadow-[0_0_30px_rgba(251,191,36,0.4)]"/> 
                     </div>
                     {/* Mobile background */}
                     <div

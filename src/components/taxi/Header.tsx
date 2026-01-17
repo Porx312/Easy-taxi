@@ -4,6 +4,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Phone, Menu, X } from "lucide-react"
 import { useState } from "react"
+import CallButton from "./Buttons/Call"
+import { ReserveButton } from "./Buttons/ReserveButton"
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -13,7 +15,7 @@ export function Header() {
             <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
                     <Link href="/" className="text-2xl font-bold text-white">
-                        UmarTaxi
+                        EasyTaxi
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -36,14 +38,8 @@ export function Header() {
                     </nav>
 
                     <div className="hidden md:flex items-center gap-3">
-                        <Button
-                            variant="outline"
-                            className="border-white text-foreground "
-                        >
-                            <Phone className="w-4 h-4 mr-2" />
-                            Llamar
-                        </Button>
-                        <Button className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90">Reservar</Button>
+                        <CallButton className="cursor-pointer"/>
+                        <ReserveButton text="Reservar" className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90" />
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -64,21 +60,13 @@ export function Header() {
                         <Link href="#servicios" className="text-black hover:text-taxi-yellow transition-colors">
                             Servicios
                         </Link>
-                        <Link href="#precios" className="text-black hover:text-taxi-yellow transition-colors">
-                            Precios
-                        </Link>
+                       
                         <Link href="#contacto" className="text-black hover:text-taxi-yellow transition-colors">
                             Contacto
                         </Link>
                         <div className="flex gap-3 mt-2">
-                            <Button
-                                variant="outline"
-                                className="border-white text-foreground hover:bg-white hover:text-black bg-transparent"
-                            >
-                                <Phone className="w-4 h-4 mr-2" />
-                                Llamar
-                            </Button>
-                            <Button className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90">Reservar</Button>
+                        <CallButton/>
+                           <ReserveButton text="Reservar" className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90"/>
                         </div>
                     </nav>
                 )}

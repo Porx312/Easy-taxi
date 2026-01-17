@@ -36,7 +36,6 @@ export async function POST(request: Request) {
             lloret: "Lloret del Mar",
             "port-aventura": "Port Aventura",
             andorra: "Andorra",
-            sitges: "Sitges",
             tarragona: "Tarragona",
             otro: "Otro destino",
         }
