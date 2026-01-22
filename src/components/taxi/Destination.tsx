@@ -3,21 +3,23 @@
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Plane, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-const popularDestinations = [
-  { name: "Lloret del mar", image: "/lloret-de-mar-beach-spain-coast.jpg", type: "city" },
-  { name: "Port aventura", image: "/port-aventura-theme-park-spain.jpg", type: "attraction" },
-  { name: "Andorra", image: "/andorra-mountains-snow-ski-resort.jpg", type: "city" },
-  { name: "Aeropuerto el prat", image: "/barcelona-el-prat-airport.jpg", type: "airport" },
-  { name: "Sitges", image: "/sitges-beach-town-spain.jpg", type: "city" },
-  { name: "Tarragona", image: "/tarragona-roman-ruins-spain.jpg", type: "city" },
-  { name: "Aeropuerto Girona", image: "/girona-airport-spain.jpg", type: "airport" },
-  { name: "Costa Brava", image: "/costa-brava-spain-beach.jpg", type: "city" },
-]
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export function Destinations() {
+  const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
   const visibleCards = 4
+
+  const popularDestinations = [
+    { name: t.destinations.items["Lloret del mar"], image: "/lloret-de-mar-beach-spain-coast.jpg", type: "city" },
+    { name: t.destinations.items["Port aventura"], image: "/port-aventura-theme-park-spain.jpg", type: "attraction" },
+    { name: t.destinations.items["Andorra"], image: "/andorra-mountains-snow-ski-resort.jpg", type: "city" },
+    { name: t.destinations.items["Aeropuerto el prat"], image: "/barcelona-el-prat-airport.jpg", type: "airport" },
+    { name: t.destinations.items["Sitges"], image: "/sitges-beach-town-spain.jpg", type: "city" },
+    { name: t.destinations.items["Tarragona"], image: "/tarragona-roman-ruins-spain.jpg", type: "city" },
+    { name: t.destinations.items["Aeropuerto Girona"], image: "/girona-airport-spain.jpg", type: "airport" },
+    { name: t.destinations.items["Costa Brava"], image: "/costa-brava-spain-beach.jpg", type: "city" },
+  ]
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,9 +41,9 @@ export function Destinations() {
     <section className="py-16  ">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl text-white md:text-3xl font-bold text-center text-foreground mb-2">
-          TE LLEVAMOS A CUALQUIER LUGAR
+          {t.destinations.title}
         </h2>
-        <p className="text-center text-white mb-10">Destinos populares y aeropuertos</p>
+        <p className="text-center text-white mb-10">{t.destinations.subtitle}</p>
 
         <div className="relative">
           <Button

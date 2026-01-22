@@ -17,11 +17,11 @@ export default function Home() {
       <HeroSection />
 
       <FeaturesBar />
-      <HowItWorks />
+      <TaxiTypes />
       </div>
+      <HowItWorks />
       <div className=" bg-gradient-to-b from-black to-gray-950">
 
-      <TaxiTypes />
       <Destinations />
       <DriversSection />
       </div>

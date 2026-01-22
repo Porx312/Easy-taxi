@@ -1,14 +1,18 @@
-import { ShieldCheck, CreditCard, Users, UserCheck, Clock } from "lucide-react"
+"use client"
 
-const features = [
-  { icon: ShieldCheck, title: "Precio cerrado", subtitle: "garantizado" },
-  { icon: CreditCard, title: "Pago después", subtitle: "del servicio" },
-  { icon: Users, title: "Coches hasta 8", subtitle: "plazas" },
-  { icon: UserCheck, title: "Conductores", subtitle: "profesionales" },
-  { icon: Clock, title: "Taxi 24/7", subtitle: "" },
-]
+import { ShieldCheck, CreditCard, Users, UserCheck, Clock } from "lucide-react"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export function FeaturesBar() {
+  const { t } = useLanguage()
+
+  const features = [
+    { icon: ShieldCheck, title: t.features.price.title, subtitle: t.features.price.subtitle },
+    { icon: CreditCard, title: t.features.payment.title, subtitle: t.features.payment.subtitle },
+    { icon: Users, title: t.features.seats.title, subtitle: t.features.seats.subtitle },
+    { icon: UserCheck, title: t.features.drivers.title, subtitle: t.features.drivers.subtitle },
+    { icon: Clock, title: t.features.availability.title, subtitle: t.features.availability.subtitle },
+  ]
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">

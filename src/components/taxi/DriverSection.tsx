@@ -1,14 +1,11 @@
-import { Check, ShieldCheck, Star, BadgeCheck } from "lucide-react"
+"use client"
 
-const driverFeatures = [
-  "Conductores con licencia oficial del AMB",
-  "Examen oficial del Institut Metropolità del Taxi",
-  "Vehículos limpios y revisados diariamente",
-  "Conductores propios (no subcontratados)",
-  "Servicio profesional y regulado",
-]
+import { Check, ShieldCheck, Star, BadgeCheck } from "lucide-react"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export function DriversSection() {
+  const { t } = useLanguage()
+
   return (
     <section
       id="servicios"
@@ -16,10 +13,10 @@ export function DriversSection() {
     >
       <div className="container mx-auto px-4">
         <h2 className="text-3xl text-white md:text-4xl font-bold text-center text-foreground mb-2">
-          ¿Quién te llevará?
+          {t.drivers.title}
         </h2>
         <p className="text-center text-taxi-yellow font-semibold mb-12">
-          Solo taxis oficiales y conductores certificados
+          {t.drivers.subtitle}
         </p>
 
         <div className="max-w-4xl mx-auto">
@@ -29,16 +26,16 @@ export function DriversSection() {
               <div className="inline-flex items-center gap-2 bg-taxi-yellow/10 text-taxi-yellow px-5 py-2 rounded-full">
                 <ShieldCheck className="w-5 h-5" />
                 <span className="font-bold text-sm">
-                  Conductores 100% verificados
+                  {t.drivers.verified}
                 </span>
               </div>
             </div>
 
             {/* Features */}
             <ul className="space-y-5">
-              {driverFeatures.map((feature, index) => (
+              {t.drivers.list.map((feature: string, index: number) => (
                 <li key={index} className="flex items-start gap-4">
-                  <div className="w-7 h-7 bg-taxi-yellow rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-7 h-7 bg-taxi-yellow rounded-full flex items-center justify-center shrink-0">
                     <Check className="w-4 h-4 text-black" />
                   </div>
                   <span className="text-foreground text-base leading-relaxed">
@@ -56,7 +53,7 @@ export function DriversSection() {
                   <span className="text-2xl font-bold text-foreground">4.9</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Valoración media
+                  {t.drivers.rating}
                 </p>
               </div>
 
@@ -68,7 +65,7 @@ export function DriversSection() {
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Servicio regulado
+                  {t.drivers.regulated}
                 </p>
               </div>
             </div>

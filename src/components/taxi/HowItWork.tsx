@@ -1,32 +1,37 @@
-import { FileText, Car, Clock, ArrowRight } from "lucide-react"
+"use client"
 
-const steps = [
-  {
-    icon: FileText,
-    step: "Paso 1",
-    title: "Solicita",
-    subtitle: "tu taxi",
-  },
-  {
-    icon: Car,
-    step: "Paso 2",
-    title: "Asignamos el",
-    subtitle: "conductor más cercano",
-  },
-  {
-    icon: Clock,
-    step: "Paso 3",
-    title: "En menos de 10",
-    subtitle: "minutos estás en marcha",
-  },
-]
+import { FileText, Car, Clock, ArrowRight } from "lucide-react"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export function HowItWorks() {
+  const { t, language } = useLanguage()
+
+  const steps = [
+    {
+      icon: FileText,
+      step: language === "es" ? "Paso 1" : "Step 1",
+      title: t.howItWorks.step1.title,
+      subtitle: t.howItWorks.step1.subtitle,
+    },
+    {
+      icon: Car,
+      step: language === "es" ? "Paso 2" : "Step 2",
+      title: t.howItWorks.step2.title,
+      subtitle: t.howItWorks.step2.subtitle,
+    },
+    {
+      icon: Clock,
+      step: language === "es" ? "Paso 3" : "Step 3",
+      title: t.howItWorks.step3.title,
+      subtitle: t.howItWorks.step3.subtitle,
+    },
+  ]
+
   return (
     <section className="py-20 ">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-14">
-          ¿Cómo funciona nuestro servicio de taxi?
+          {t.howItWorks.title}
         </h2>
 
         {/* Steps */}
@@ -60,11 +65,11 @@ export function HowItWorks() {
         {/* Trust message */}
         <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm px-6 py-5 text-center border border-neutral-200">
           <p className="text-sm md:text-base text-muted-foreground">
-            Trabajamos únicamente con{" "}
+            {t.howItWorks.trust}
             <span className="font-semibold text-foreground">
-              conductores profesionales y autorizados
+              {t.howItWorks.trustHighlight}
             </span>
-            , garantizando un servicio seguro, puntual y de máxima calidad.
+            {language === "es" ? ", garantizando un servicio seguro, puntual y de máxima calidad." : ", guaranteeing a safe, punctual and high quality service."}
           </p>
         </div>
       </div>

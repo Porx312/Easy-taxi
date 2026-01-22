@@ -23,40 +23,42 @@ import {
   ChevronRight,
 } from "lucide-react"
 import dynamic from "next/dynamic"
-
-const taxiTypes = [
-  { value: "estandar", label: "Taxi Estándar" },
-  { value: "7-8-plazas", label: "7/8 Plazas" },
-  { value: "premium", label: "Premium" },
-  { value: "adaptado", label: "Adaptado PMR" },
-]
-
-const popularDestinations = [
-  { value: "aeropuerto-prat", label: "Aeropuerto El Prat", coords: { lat: 41.2974, lng: 2.0833 } },
-  { value: "aeropuerto-girona", label: "Aeropuerto Girona", coords: { lat: 41.9009, lng: 2.7606 } },
-  { value: "lloret", label: "Lloret del Mar", coords: { lat: 41.7, lng: 2.8453 } },
-  { value: "port-aventura", label: "Port Aventura", coords: { lat: 41.0869, lng: 1.1556 } },
-  { value: "andorra", label: "Andorra", coords: { lat: 42.5063, lng: 1.5218 } },
-  { value: "tarragona", label: "Tarragona", coords: { lat: 41.1189, lng: 1.2445 } },
-]
-
-const MapPicker = dynamic(() => import("./MapPicker"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-[300px] bg-neutral-100 rounded-lg flex items-center justify-center">
-      <Loader2 className="w-8 h-8 animate-spin text-taxi-yellow" />
-    </div>
-  ),
-})
-
-const STEPS = [
-  { id: 1, title: "Datos personales", description: "Tu información de contacto" },
-  { id: 2, title: "Detalles del viaje", description: "Origen, destino y tipo de taxi" },
-  { id: 3, title: "Fecha y hora", description: "Cuándo te recogemos" },
-]
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export function ContactForm() {
+  const { t, language } = useLanguage()
   const [currentStep, setCurrentStep] = useState(1)
+
+  const taxiTypes = [
+    { value: "estandar", label: t.taxiTypes.categories.estandar },
+    { value: "7-8-plazas", label: t.taxiTypes.categories.plazas },
+    { value: "premium", label: t.taxiTypes.categories.premium },
+    { value: "adaptado", label: t.taxiTypes.categories.adaptado },
+  ]
+
+  const popularDestinations = [
+    { value: "aeropuerto-prat", label: t.destinations.items["Aeropuerto el prat"], coords: { lat: 41.2974, lng: 2.0833 } },
+    { value: "aeropuerto-girona", label: t.destinations.items["Aeropuerto Girona"], coords: { lat: 41.9009, lng: 2.7606 } },
+    { value: "lloret", label: t.destinations.items["Lloret del mar"], coords: { lat: 41.7, lng: 2.8453 } },
+    { value: "port-aventura", label: t.destinations.items["Port aventura"], coords: { lat: 41.0869, lng: 1.1556 } },
+    { value: "andorra", label: t.destinations.items["Andorra"], coords: { lat: 42.5063, lng: 1.5218 } },
+    { value: "tarragona", label: t.destinations.items["Tarragona"], coords: { lat: 41.1189, lng: 1.2445 } },
+  ]
+
+  const MapPicker = dynamic(() => import("./MapPicker"), {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[300px] bg-neutral-100 rounded-lg flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-taxi-yellow" />
+      </div>
+    ),
+  })
+
+  const STEPS = [
+    { id: 1, title: t.contact.steps.step1.title, description: t.contact.steps.step1.description },
+    { id: 2, title: t.contact.steps.step2.title, description: t.contact.steps.step2.description },
+    { id: 3, title: t.contact.steps.step3.title, description: t.contact.steps.step3.description },
+  ]
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -146,9 +148,9 @@ export function ContactForm() {
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-10 text-center">
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-foreground mb-2">Reserva Enviada!</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t.contact.success.title}</h2>
               <p className="text-muted-foreground mb-6">
-                Hemos recibido tu solicitud. Te contactaremos en menos de 10 minutos para confirmar tu reserva.
+                {t.contact.success.message}
               </p>
               <Button
                 onClick={() => {
@@ -157,7 +159,7 @@ export function ContactForm() {
                 }}
                 className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90"
               >
-                Hacer otra reserva
+                {t.contact.success.cta}
               </Button>
             </div>
           </div>
@@ -171,8 +173,8 @@ export function ContactForm() {
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Reserva tu Taxi</h2>
-            <p className="text-muted-foreground">Completa el formulario en 3 sencillos pasos</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">{t.contact.title}</h2>
+            <p className="text-muted-foreground">{t.contact.subtitle}</p>
           </div>
 
           {/* Step Indicator */}
@@ -219,12 +221,12 @@ export function ContactForm() {
                   <div className="space-y-2">
                     <Label htmlFor="nombre" className="flex items-center gap-2">
                       <User className="w-4 h-4 text-taxi-yellow" />
-                      Nombre completo *
+                      {t.contact.form.name}
                     </Label>
                     <Input
                       id="nombre"
                       required
-                      placeholder="Juan Pérez"
+                      placeholder={t.contact.form.namePlaceholder}
                       value={formData.nombre}
                       onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
                     />
@@ -233,13 +235,13 @@ export function ContactForm() {
                   <div className="space-y-2">
                     <Label htmlFor="email" className="flex items-center gap-2">
                       <Mail className="w-4 h-4 text-taxi-yellow" />
-                      Email *
+                      {t.contact.form.email}
                     </Label>
                     <Input
                       id="email"
                       type="email"
                       required
-                      placeholder="correo@ejemplo.com"
+                      placeholder={t.contact.form.emailPlaceholder}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
@@ -248,13 +250,13 @@ export function ContactForm() {
                   <div className="space-y-2">
                     <Label htmlFor="telefono" className="flex items-center gap-2">
                       <Phone className="w-4 h-4 text-taxi-yellow" />
-                      Teléfono *
+                      {t.contact.form.phone}
                     </Label>
                     <Input
                       id="telefono"
                       type="tel"
                       required
-                      placeholder="+34 600 000 000"
+                      placeholder={t.contact.form.phonePlaceholder}
                       value={formData.telefono}
                       onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
                     />
@@ -272,13 +274,13 @@ export function ContactForm() {
 
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
-                      <Label htmlFor="tipoTaxi">Tipo de taxi *</Label>
+                      <Label htmlFor="tipoTaxi">{t.contact.form.taxiType}</Label>
                       <Select
                         value={formData.tipoTaxi}
                         onValueChange={(value) => setFormData({ ...formData, tipoTaxi: value })}
                       >
                         <SelectTrigger id="tipoTaxi">
-                          <SelectValue placeholder="Selecciona un tipo" />
+                          <SelectValue placeholder={t.contact.form.taxiTypePlaceholder} />
                         </SelectTrigger>
                         <SelectContent>
                           {taxiTypes.map((tipo) => (
@@ -293,7 +295,7 @@ export function ContactForm() {
                     <div className="space-y-2">
                       <Label htmlFor="pasajeros" className="flex items-center gap-2">
                         <Users className="w-4 h-4 text-taxi-yellow" />
-                        Pasajeros *
+                        {t.contact.form.passengers}
                       </Label>
                       <Input
                         id="pasajeros"
@@ -301,7 +303,7 @@ export function ContactForm() {
                         min="1"
                         max="8"
                         required
-                        placeholder="1"
+                        placeholder={t.contact.form.passengersPlaceholder}
                         value={formData.pasajeros}
                         onChange={(e) => setFormData({ ...formData, pasajeros: e.target.value })}
                       />
@@ -311,12 +313,12 @@ export function ContactForm() {
                   <div className="space-y-2">
                     <Label htmlFor="origen" className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-taxi-yellow" />
-                      Dirección de recogida *
+                      {t.contact.form.origin}
                     </Label>
                     <Input
                       id="origen"
                       required
-                      placeholder="Calle, número, ciudad"
+                      placeholder={t.contact.form.originPlaceholder}
                       value={formData.origen}
                       onChange={(e) => setFormData({ ...formData, origen: e.target.value })}
                     />
@@ -325,7 +327,7 @@ export function ContactForm() {
                   <div className="space-y-3">
                     <Label className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-red-500" />
-                      Destino *
+                      {t.contact.form.destination}
                     </Label>
 
                     <div className="flex gap-2 flex-wrap">
@@ -338,7 +340,7 @@ export function ContactForm() {
                           destinoInputMode === "text" ? "bg-taxi-yellow text-black hover:bg-taxi-yellow/90" : ""
                         }
                       >
-                        Escribir
+                        {t.contact.form.write}
                       </Button>
                       <Button
                         type="button"
@@ -349,7 +351,7 @@ export function ContactForm() {
                           destinoInputMode === "select" ? "bg-taxi-yellow text-black hover:bg-taxi-yellow/90" : ""
                         }
                       >
-                        Populares
+                        {t.contact.form.popular}
                       </Button>
                       <Button
                         type="button"
@@ -359,7 +361,7 @@ export function ContactForm() {
                         className="border-taxi-yellow text-taxi-yellow hover:bg-taxi-yellow hover:text-black"
                       >
                         <Map className="w-4 h-4 mr-1" />
-                        Mapa
+                        {t.contact.form.map}
                       </Button>
                     </div>
 
@@ -367,7 +369,7 @@ export function ContactForm() {
                       <Input
                         id="destino"
                         required
-                        placeholder="Escribe la dirección de destino"
+                        placeholder={t.contact.form.destinationPlaceholder}
                         value={formData.destino}
                         onChange={(e) => setFormData({ ...formData, destino: e.target.value, destinoCoords: null })}
                       />
@@ -379,7 +381,7 @@ export function ContactForm() {
                         onValueChange={handlePopularDestinationSelect}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecciona un destino" />
+                          <SelectValue placeholder={t.contact.form.taxiTypePlaceholder} />
                         </SelectTrigger>
                         <SelectContent>
                           {popularDestinations.map((dest) => (
@@ -422,7 +424,7 @@ export function ContactForm() {
                     <div className="space-y-2">
                       <Label htmlFor="fecha" className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-taxi-yellow" />
-                        Fecha *
+                        {t.contact.form.date}
                       </Label>
                       <Input
                         id="fecha"
@@ -436,7 +438,7 @@ export function ContactForm() {
                     <div className="space-y-2">
                       <Label htmlFor="hora" className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-taxi-yellow" />
-                        Hora *
+                        {t.contact.form.time}
                       </Label>
                       <Input
                         id="hora"
@@ -449,10 +451,10 @@ export function ContactForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="mensaje">Información adicional</Label>
+                    <Label htmlFor="mensaje">{t.contact.form.additionalInfo}</Label>
                     <Textarea
                       id="mensaje"
-                      placeholder="Equipaje especial, silla de bebé, etc."
+                      placeholder={t.contact.form.additionalInfoPlaceholder}
                       rows={4}
                       value={formData.mensaje}
                       onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
@@ -461,20 +463,20 @@ export function ContactForm() {
 
                   {/* Summary */}
                   <div className="bg-neutral-50 rounded-xl p-4 space-y-2">
-                    <h4 className="font-medium text-foreground text-sm">Resumen de tu reserva</h4>
+                    <h4 className="font-medium text-foreground text-sm">{t.contact.form.summaryTitle}</h4>
                     <div className="text-sm text-muted-foreground space-y-1">
                       <p>
-                        <span className="font-medium text-foreground">Nombre:</span> {formData.nombre}
+                        <span className="font-medium text-foreground">{t.contact.form.summaryName}:</span> {formData.nombre}
                       </p>
                       <p>
-                        <span className="font-medium text-foreground">Taxi:</span>{" "}
+                        <span className="font-medium text-foreground">{t.contact.form.summaryTaxi}:</span>{" "}
                         {taxiTypes.find((t) => t.value === formData.tipoTaxi)?.label}
                       </p>
                       <p>
-                        <span className="font-medium text-foreground">De:</span> {formData.origen}
+                        <span className="font-medium text-foreground">{t.contact.form.summaryFrom}:</span> {formData.origen}
                       </p>
                       <p>
-                        <span className="font-medium text-foreground">A:</span> {formData.destino}
+                        <span className="font-medium text-foreground">{t.contact.form.summaryTo}:</span> {formData.destino}
                       </p>
                     </div>
                   </div>
@@ -486,7 +488,7 @@ export function ContactForm() {
                 {currentStep > 1 ? (
                   <Button type="button" variant="outline" onClick={prevStep}>
                     <ChevronLeft className="w-4 h-4 mr-1" />
-                    Anterior
+                    {t.contact.form.prev}
                   </Button>
                 ) : (
                   <div />
@@ -499,7 +501,7 @@ export function ContactForm() {
                     disabled={currentStep === 1 ? !canProceedStep1 : !canProceedStep2}
                     className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90"
                   >
-                    Siguiente
+                    {t.contact.form.next}
                     <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
                 ) : (
@@ -511,10 +513,10 @@ export function ContactForm() {
                     {isLoading ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Enviando...
+                        {t.contact.form.sending}
                       </>
                     ) : (
-                      "Confirmar Reserva"
+                      t.contact.form.confirm
                     )}
                   </Button>
                 )}
@@ -523,7 +525,7 @@ export function ContactForm() {
           </div>
 
           <p className="text-center text-sm text-muted-foreground mt-4">
-            Te contactaremos en menos de 10 minutos para confirmar tu reserva
+            {t.contact.form.footer}
           </p>
         </div>
       </div>
@@ -533,7 +535,7 @@ export function ContactForm() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold">Selecciona el destino en el mapa</h3>
+              <h3 className="text-lg font-semibold">{language === "es" ? "Selecciona el destino en el mapa" : "Select destination on map"}</h3>
               <Button variant="ghost" size="sm" onClick={() => setShowMap(false)}>
                 <X className="w-5 h-5" />
               </Button>

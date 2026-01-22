@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Cookie, X } from "lucide-react"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 export function CookieBanner() {
+  const { t, language } = useLanguage()
   const [showBanner, setShowBanner] = useState(false)
 
   useEffect(() => {
@@ -33,36 +35,32 @@ export function CookieBanner() {
           <button
             onClick={rejectCookies}
             className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Cerrar"
+            aria-label={language === "es" ? "Cerrar" : "Close"}
           >
             <X className="w-5 h-5" />
           </button>
-
           <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
             <div className="flex-shrink-0">
               <div className="w-16 h-16 bg-taxi-yellow/10 rounded-full flex items-center justify-center">
                 <Cookie className="w-8 h-8 text-taxi-yellow" />
               </div>
             </div>
-
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-foreground mb-2">Política de Cookies</h3>
+              <h3 className="text-xl font-bold text-foreground mb-2">{t.cookies.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Utilizamos cookies propias y de terceros para mejorar nuestros servicios, analizar el tráfico y mostrar
-                publicidad relacionada con tus preferencias. Al hacer clic en "Aceptar", consientes el uso de estas
-                tecnologías. Puedes obtener más información en nuestra{" "}
+                {t.cookies.description}
                 <a href="/politica-privacidad" className="text-taxi-yellow hover:underline font-medium">
-                  Política de Privacidad
+                  {t.cookies.link}
                 </a>
                 .
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button onClick={acceptCookies} className="bg-taxi-yellow text-black hover:bg-taxi-yellow/90 font-bold">
-                  Aceptar todas
+                  {t.cookies.accept}
                 </Button>
                 <Button onClick={rejectCookies} variant="outline" className="font-medium bg-transparent">
-                  Solo necesarias
+                  {t.cookies.necessary}
                 </Button>
               </div>
             </div>
