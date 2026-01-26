@@ -8,7 +8,7 @@ export function HeroSection() {
     const { t } = useLanguage()
 
     return (
-        <section id="inicio" className="relative overflow-hidden min-h-[90vh] md:min-h-[80vh] flex items-center">
+        <section id="inicio" className="relative overflow-hidden h-[95vh] md:h-[80vh] flex items-center">
             {/* Background Effects */}
             <div className="absolute inset-0 z-0">
                
