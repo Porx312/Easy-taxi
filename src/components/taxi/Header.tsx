@@ -94,7 +94,7 @@ export function Header() {
                                 <div className="w-10 h-10 bg-taxi-yellow rounded-xl flex items-center justify-center">
                                     <span className="text-black font-black text-xl italic">T</span>
                                 </div>
-                                <span className="text-2xl font-bold text-white tracking-tight">taxiBcn</span>
+                                <span className="text-2xl font-bold text-white tracking-tight">EasytaxiBcn</span>
                             </Link>
                             <button
                                 className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white"
