@@ -8,14 +8,14 @@ import { useLanguage } from "@/contexts/LanguageContext"
 export function Destinations() {
   const { t } = useLanguage()
   const popularDestinations = [
-    { name: t.destinations.items["Lloret del mar"], image: "/lloret-de-mar-beach-spain-coast.jpg", type: "city" },
-    { name: t.destinations.items["Port aventura"], image: "/port-aventura-theme-park-spain.jpg", type: "attraction" },
-    { name: t.destinations.items["Andorra"], image: "/andorra-mountains-snow-ski-resort.jpg", type: "city" },
-    { name: t.destinations.items["Aeropuerto el prat"], image: "/barcelona-el-prat-airport.jpg", type: "airport" },
-    { name: t.destinations.items["Sitges"], image: "/sitges-beach-town-spain.jpg", type: "city" },
-    { name: t.destinations.items["Tarragona"], image: "/tarragona-roman-ruins-spain.jpg", type: "city" },
-    { name: t.destinations.items["Aeropuerto Girona"], image: "/girona-airport-spain.jpg", type: "airport" },
-    { name: t.destinations.items["Costa Brava"], image: "/costa-brava-spain-beach.jpg", type: "city" },
+    { name: t.destinations.items["Lloret del mar"], image: "https://res.cloudinary.com/dbys9ezjr/image/upload/v1769777960/spain-2464619_1280_ofqdcd.jpg", type: "city" },
+    { name: t.destinations.items["Port aventura"], image: "https://res.cloudinary.com/dbys9ezjr/image/upload/v1769778180/Port_aventura_Roller_coasters_bnqtvt.jpg", type: "attraction" },
+    { name: t.destinations.items["Andorra"], image: "https://res.cloudinary.com/dbys9ezjr/image/upload/v1769778235/11_Very_Best_Things_to_Do_in_Andorra_From_Ski_Slopes_To_Scenic_Trails_-_Hand_Luggage_Only_-_Travel_Food_And_Photography_Blog_slplxl.jpg", type: "city" },
+    { name: t.destinations.items["Aeropuerto el prat"], image: "https://res.cloudinary.com/dbys9ezjr/image/upload/v1769778197/Transavia_737_at_Barcelona_El_Prat_kcc66z.jpg", type: "airport" },
+    { name: t.destinations.items["Sitges"], image: "https://res.cloudinary.com/dbys9ezjr/image/upload/v1769778310/SITGES_COSTA_DORADA_SPAIN_ATENEA_PARK_SUITES_AND_APARTMENTS____7_NIGHTS_FROM_391PP____Standard_Studio_2_People_Bed_and_Breakfast__7th_December_2025__%EF%B8%8F_Flying_from_London_Southend__Small_under_seat_bag___Ju_d1btmm.jpg", type: "city" },
+    { name: t.destinations.items["Tarragona"], image: "https://res.cloudinary.com/dbys9ezjr/image/upload/v1769778351/Los_pueblos_m%C3%A1s_bonitos_de_Tarragona_para_descubrir_uno_a_uno_znryyq.jpg", type: "city" },
+    { name: t.destinations.items["Aeropuerto Girona"], image: "https://res.cloudinary.com/dbys9ezjr/image/upload/v1769778404/Girona_Airport_%EF%B8%8F_djjjf5.jpg", type: "airport" },
+    { name: t.destinations.items["Costa Brava"], image: "https://res.cloudinary.com/dbys9ezjr/image/upload/v1769778438/Summer_ywlejd.jpg", type: "city" },
   ]
 
   const [[page, direction], setPage] = useState([0, 0])
