@@ -46,13 +46,13 @@ export function Header() {
                 : "py-6 bg-transparent"
             }`}
         >
-            <div className="container mx-auto px-6">
-                <div className="flex items-center justify-between">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div className="flex items-center justify-between gap-4">
                     <Link href="/" className="group flex items-center gap-2">
                         <div className="w-10 h-10 bg-taxi-yellow rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.3)] transition-transform group-hover:scale-110">
                             <span className="text-black font-black text-xl bold">ET</span>
                         </div>
-                        <span className="text-2xl font-bold text-white tracking-tight">
+                        <span className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-none">
                             Easytaxi<span className="text-taxi-yellow italic">Bcn</span>
                         </span>
                     </Link>
@@ -72,7 +72,7 @@ export function Header() {
                     </nav>
  
                     <div className="hidden lg:flex items-center gap-4">
-                        <LanguageSelector/>
+                        <LanguageSelector className="w-[140px]" />
                         <div className="h-6 w-px bg-white/10 mx-2" />
                         <CallButton />
                         <ReserveButton
@@ -81,9 +81,8 @@ export function Header() {
                         />
                     </div>
  
-                    {/* Mobile Menu Items */}
-                    <div className="lg:hidden flex items-center gap-3">
-                        <LanguageSelector className="scale-90 origin-right" />
+                    <div className="lg:hidden flex items-center gap-2">
+                        <LanguageSelector className="w-[100px]" />
                         <button
                             className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white"
                             onClick={() => setIsMenuOpen(!isMenuOpen)}

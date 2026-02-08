@@ -20,8 +20,8 @@ export function LanguageSelector({ className }: { className?: string }) {
         value={language}
         onValueChange={(value) => setLanguage(value as Language)}
       >
-        <SelectTrigger className="w-[145px] bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all rounded-full h-9">
-          <Globe className="w-4 h-4 mr-2" />
+        <SelectTrigger className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all rounded-full h-9 px-2">
+          <Globe className="w-4 h-4 mr-2 hidden sm:block" />
           <SelectValue placeholder="Language" />
         </SelectTrigger>
         <SelectContent className="bg-black/90 border-white/20 text-white backdrop-blur-xl">
