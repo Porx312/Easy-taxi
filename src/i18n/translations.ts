@@ -124,6 +124,12 @@ export type TranslationType = {
         details: string
       }
     }
+    prices: {
+      estandar: string
+      plazas: string
+      adaptado: string
+      premium: string
+    }
   }
 }
 
@@ -260,6 +266,12 @@ export const translations: Record<Language, TranslationType> = {
       },
       servicesHeader: "Servicios Disponibles",
       cta: "Consigue tu Taxi Ahora",
+      prices: {
+        estandar: "Desde 18€",
+        plazas: "Desde 25€",
+        adaptado: "Desde 25€",
+        premium: "Desde 22€",
+      },
       destinations: {
         aeropuertos: {
           label: "Aeropuertos",
@@ -421,6 +433,12 @@ export const translations: Record<Language, TranslationType> = {
       },
       servicesHeader: "Available Services",
       cta: "Get your Taxi Now",
+      prices: {
+        estandar: "From 18€",
+        plazas: "From 25€",
+        adaptado: "From 25€",
+        premium: "From 22€",
+      },
       destinations: {
         aeropuertos: {
           label: "Airports",

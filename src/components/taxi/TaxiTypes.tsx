@@ -20,6 +20,7 @@ type TaxiType = {
   title: string
   image: string
   alt: string
+  price: string
 }
 
 type Destination = {
@@ -41,21 +42,25 @@ function TaxiTypesComponent() {
       title: t.taxiTypes.categories.estandar,
       image: "/taxi/types/estandar.png",
       alt: `Taxi ${t.taxiTypes.categories.estandar}`,
+      price: t.taxiTypes.prices.estandar,
     }, {
       title: t.taxiTypes.categories.plazas,
       image: "/taxi/types/7-8plazas.png",
       alt: `Taxi ${t.taxiTypes.categories.plazas}`,
+      price: t.taxiTypes.prices.plazas,
     },
     
     {
       title: t.taxiTypes.categories.adaptado,
       image: "/taxi/types/adaptado.png",
       alt: `Taxi ${t.taxiTypes.categories.adaptado}`,
+      price: t.taxiTypes.prices.adaptado,
     },
     {
       title: t.taxiTypes.categories.premium,
       image: "/taxi/types/premium.png",
       alt: `Taxi ${t.taxiTypes.categories.premium}`,
+      price: t.taxiTypes.prices.premium,
     },
   ]
 
@@ -136,42 +141,50 @@ function TaxiTypesComponent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="group relative flex flex-col pt-12 cursor-pointer"
+                className="group relative flex flex-col pt-12 cursor-pointer h-full"
                 onClick={() => scrollToContact()}
               >
-                <div className="relative z-10 bg-white/5 border border-white/10 backdrop-blur-xl rounded-[3rem] p-10 pt-60 h-full transition-all duration-500 group-hover:bg-white/10 group-hover:border-taxi-yellow/30 shadow-2xl">
+                <div className="relative z-10 bg-white/5 border border-white/10 backdrop-blur-xl rounded-[3rem] px-10 pb-10 h-full flex flex-col transition-all duration-500 group-hover:bg-white/10 group-hover:border-taxi-yellow/30 shadow-2xl">
+                    {/* Image - Moved inside flow with negative margin */}
+                    <motion.div 
+                      className="relative self-center w-[300px] z-20 pointer-events-none px-4 mb-4"
+                      whileHover={{ scale: 1.1, y: -10 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                    >
+                      <Image
+                        src={taxi.image || "/placeholder.svg"}
+                        alt={taxi.alt}
+                        width={500}
+                        height={250}
+                        className="object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.8)] transition-transform duration-700 group-hover:drop-shadow-[0_40px_70px_rgba(251,191,36,0.4)] w-full h-auto"
+                        loading="lazy"
+                      />
+                    </motion.div>
+
                     {/* Taxi Type Badge */}
-                    <div className="absolute -top-6 left-10 px-6 py-3 bg-taxi-yellow text-black rounded-2xl font-black italic text-sm uppercase shadow-2xl tracking-tighter">
+                    <div className="absolute -top-6 left-10 px-6 py-3  bg-taxi-yellow text-black rounded-2xl font-black italic text-sm uppercase shadow-2xl tracking-tighter z-50">
                       {taxi.title}
                     </div>
 
-                    <div className="mb-6">
-                      <div className="h-1.5 w-12 bg-taxi-yellow rounded-full group-hover:w-24 transition-all duration-500" />
+                    {/* Price Badge on Hover */}
+                    <div className="absolute top-0 right-0 px-6 py-4 bg-black/80 backdrop-blur-md text-white border-b border-l border-white/10 rounded-bl-[2.5rem] rounded-tr-[2.5rem] font-bold italic text-sm uppercase z-30 transition-all duration-300 opacity-100 translate-y-0 translate-x-0 lg:opacity-0 lg:translate-x-4 lg:-translate-y-4 lg:group-hover:translate-x-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100">
+                      {taxi.price}
                     </div>
-                    
-                    <div className="space-y-4">
-                     
-                      <div className="flex flex-wrap gap-2">
-                         <span className="text-[10px] font-bold uppercase tracking-widest text-white/30 border border-white/10 px-3 py-1.5 rounded-xl group-hover:border-taxi-yellow/30 group-hover:text-taxi-yellow/50 transition-colors">{taxi.title}</span>
-                         <span className="text-[10px] font-bold uppercase tracking-widest text-white/30 border border-white/10 px-3 py-1.5 rounded-xl group-hover:border-taxi-yellow/30 group-hover:text-taxi-yellow/50 transition-colors">24/7</span>
+
+                    <div className="absolute bottom-10">
+                      <div className="mb-6">
+                        <div className="h-1.5 w-12 bg-taxi-yellow rounded-full group-hover:w-24 transition-all duration-500" />
+                      </div>
+                      
+                      <div className="space-y-4">
+                       
+                        <div className="flex flex-wrap gap-2">
+                           <span className="text-[10px] font-bold uppercase tracking-widest text-white/30 border border-white/10 px-3 py-1.5 rounded-xl group-hover:border-taxi-yellow/30 group-hover:text-taxi-yellow/50 transition-colors">{taxi.title}</span>
+                           <span className="text-[10px] font-bold uppercase tracking-widest text-white/30 border border-white/10 px-3 py-1.5 rounded-xl group-hover:border-taxi-yellow/30 group-hover:text-taxi-yellow/50 transition-colors">24/7</span>
+                        </div>
                       </div>
                     </div>
                   </div>
- 
-                 <motion.div 
-                   className="absolute -top-10 left-1/2 -translate-x-1/2 w-[120%] z-20 pointer-events-none px-4"
-                  whileHover={{ scale: 1.1, y: -10 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                >
-                  <Image
-                    src={taxi.image || "/placeholder.svg"}
-                    alt={taxi.alt}
-                    width={500}
-                    height={250}
-                    className="object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.8)] transition-transform duration-700 group-hover:drop-shadow-[0_40px_70px_rgba(251,191,36,0.4)]"
-                    loading="lazy"
-                  />
-                </motion.div>
               </motion.div>
             ))}
           </div>
