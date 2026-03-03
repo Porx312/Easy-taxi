@@ -267,10 +267,10 @@ export const translations: Record<Language, TranslationType> = {
       servicesHeader: "Servicios Disponibles",
       cta: "Consigue tu Taxi Ahora",
       prices: {
-        estandar: "Desde 18€",
-        plazas: "Desde 25€",
-        adaptado: "Desde 25€",
-        premium: "Desde 22€",
+        estandar: "Desde 12€",
+        plazas: "Desde 19€",
+        adaptado: "Desde 19€",
+        premium: "Desde 16€",
       },
       destinations: {
         aeropuertos: {
@@ -434,10 +434,10 @@ export const translations: Record<Language, TranslationType> = {
       servicesHeader: "Available Services",
       cta: "Get your Taxi Now",
       prices: {
-        estandar: "From 18€",
-        plazas: "From 25€",
-        adaptado: "From 25€",
-        premium: "From 22€",
+        estandar: "From 12€",
+        plazas: "From 19€",
+        adaptado: "From 19€",
+        premium: "From 16€",
       },
       destinations: {
         aeropuertos: {
