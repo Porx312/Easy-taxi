@@ -8,7 +8,21 @@ export function HeroSection() {
     const { t } = useLanguage()
 
     return (
-        <section id="inicio" className="relative overflow-hidden  flex items-center pt-32">
+        <section id="inicio" className="relative overflow-hidden flex items-center pt-32 min-h-screen">
+            {/* Background Image */}
+            <div 
+                className="absolute inset-0 z-0"
+                style={{
+                    backgroundImage: `url('https://res.cloudinary.com/dbys9ezjr/image/upload/v1772982057/feelgoodpics-barcelona-242036_1920_fzg4ci.jpg')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                }}
+            >
+                {/* Dark overlay for better text readability */}
+                <div className="absolute inset-0 bg-black/60" />
+            </div>
+            
             {/* Background Effects */}
             <div className="absolute inset-0 z-0">
                
@@ -72,10 +86,10 @@ export function HeroSection() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className="text-gray-400 text-xl md:text-2xl mb-12 max-w-2xl mx-auto leading-relaxed"
+                            className="text-white text-xl md:text-2xl mb-12 max-w-2xl mx-auto leading-relaxed"
                         >
                             {t.hero.description}
-                            <span className="text-white font-semibold block mt-2">
+                            <span className="text-taxi-yellow font-semibold block mt-2">
                                 {t.hero.secondary}
                             </span>
                         </motion.p>

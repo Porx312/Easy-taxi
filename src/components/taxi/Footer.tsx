@@ -22,19 +22,19 @@ export function Footer() {
                             </span>
                         </div>
                         <nav className="flex flex-wrap gap-x-8 gap-y-6 text-[10px] font-black uppercase tracking-[0.2em] mb-12">
-                            <Link href="#inicio" className="text-white/30 hover:text-taxi-yellow transition-all hover:tracking-[0.3em]">
+                            <Link href="#inicio" className="text-white/30 hover:text-taxi-yellow transition-colors">
                                 {t.nav.inicio}
                             </Link>
-                            <Link href="#tipos" className="text-white/30 hover:text-taxi-yellow transition-all hover:tracking-[0.3em]">
+                            <Link href="#tipos" className="text-white/30 hover:text-taxi-yellow transition-colors">
                                 {t.nav.tipos}
                             </Link>
-                            <Link href="#servicios" className="text-white/30 hover:text-taxi-yellow transition-all hover:tracking-[0.3em]">
+                            <Link href="#servicios" className="text-white/30 hover:text-taxi-yellow transition-colors">
                                 {t.nav.servicios}
                             </Link>
-                            <Link href="#precios" className="text-white/30 hover:text-taxi-yellow transition-all hover:tracking-[0.3em]">
+                            <Link href="#precios" className="text-white/30 hover:text-taxi-yellow transition-colors">
                                 {t.nav.precios}
                             </Link>
-                            <Link href="#contacto" className="text-white/30 hover:text-taxi-yellow transition-all hover:tracking-[0.3em]">
+                            <Link href="#contacto" className="text-white/30 hover:text-taxi-yellow transition-colors">
                                 {t.nav.contacto}
                             </Link>
                         </nav>
@@ -44,13 +44,13 @@ export function Footer() {
                     <div className="flex flex-col sm:flex-row md:flex-col gap-10">
                         <div className="group">
                           <p className="text-[9px] font-black uppercase tracking-[0.4em] text-taxi-yellow/40 mb-3">Direct Contact</p>
-                          <Link href="tel:+34641230218" className="text-2xl font-black text-white hover:text-taxi-yellow transition-all italic tracking-tighter block group-hover:translate-x-2">
+                          <Link href="tel:+34641230218" className="text-2xl font-black text-white hover:text-taxi-yellow transition-colors italic tracking-tighter block">
                               +34 641 230 218
                           </Link>
                         </div>
                         <div className="group border-t border-white/5 pt-10 sm:border-t-0 sm:pt-0 md:border-t md:pt-10">
                           <p className="text-[9px] font-black uppercase tracking-[0.4em] text-taxi-yellow/40 mb-3">Email Support</p>
-                          <Link href="mailto:easytaxibcn@gmail.com" className="text-2xl font-black text-white hover:text-taxi-yellow transition-all italic tracking-tighter block group-hover:translate-x-2">
+                          <Link href="mailto:easytaxibcn@gmail.com" className="text-2xl font-black text-white hover:text-taxi-yellow transition-colors italic tracking-tighter block">
                               easytaxibcn@gmail.com
                           </Link>
                         </div>

@@ -269,7 +269,7 @@ export const translations: Record<Language, TranslationType> = {
       prices: {
         estandar: "Desde 12€",
         plazas: "Desde 19€",
-        adaptado: "Desde 19€",
+        adaptado: "Desde 16€",
         premium: "Desde 16€",
       },
       destinations: {
@@ -436,7 +436,7 @@ export const translations: Record<Language, TranslationType> = {
       prices: {
         estandar: "From 12€",
         plazas: "From 19€",
-        adaptado: "From 19€",
+        adaptado: "From 16€",
         premium: "From 16€",
       },
       destinations: {
